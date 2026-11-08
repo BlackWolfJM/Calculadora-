@@ -1,4 +1,4 @@
-# 🧮 Calculadora Súper Inteligente
+#  Calculadora Súper Inteligente
 
 ![Python 3.13+](https://img.shields.io/badge/Python-3.13%2B-3776AB?logo=python&logoColor=white)
 ![PySide6 / Qt6](https://img.shields.io/badge/UI-PySide6%20%2F%20Qt6-41CD52?logo=qt&logoColor=white)
@@ -7,7 +7,7 @@
 ![Offline First](https://img.shields.io/badge/100%25%20Local-Sin%20Conexi%C3%B3n-10B981)
 
 > [!WARNING]
-> **🚧 Proyecto actualmente en desarrollo activo (Work in Progress / Beta)**
+> ** Proyecto actualmente en desarrollo activo (Work in Progress / Beta)**
 >
 > Este proyecto se encuentra en **construcción y evolución continua**. Nuevos módulos matemáticos, desgloses pedagógicos paso a paso, mejoras del espacio de graficado 2D/3D y optimizaciones de interfaz se integran de forma iterativa. Algunas funciones avanzadas pueden cambiar o ampliarse en próximas versiones.
 
@@ -15,7 +15,7 @@
 
 ---
 
-## 📸 Capturas de pantalla (Estado actual en ejecución)
+##  Capturas de pantalla (Estado actual en ejecución)
 
 ### 1. Resolución algebraica con árbol de subpasos desplegables y fórmulas KaTeX
 Desglose paso a paso para ecuaciones lineales y cuadráticas (forma estándar $P(x)=0$, identificación de coeficientes, cálculo del discriminante $\Delta = b^2 - 4ac$ y fórmula general) con tarjetas expandibles:
@@ -39,7 +39,7 @@ Espacio dedicado de graficado con soporte para múltiples expresiones simultáne
 
 ---
 
-## ✨ Características principales
+##  Características principales
 
 - **Cálculo Diferencial e Integral**:
   - Derivadas de orden arbitrario con desglose de reglas (potencia, producto, cociente, cadena).
@@ -61,7 +61,7 @@ Espacio dedicado de graficado con soporte para múltiples expresiones simultáne
 
 ---
 
-## 🏗️ Arquitectura del proyecto
+##  Arquitectura del proyecto
 
 El proyecto sigue **Clean Architecture** con separación estricta de responsabilidades:
 
@@ -89,7 +89,7 @@ calculadora/
 
 ---
 
-## 🚀 Requisitos e instalación desde código fuente
+##  Requisitos e instalación desde código fuente
 
 ### Requisitos previos
 - **Windows 10 / 11** (64 bits)
@@ -144,7 +144,7 @@ El ejecutable compilado queda en `dist\CalculadoraSuperInteligente\CalculadoraSu
 
 ---
 
-## 🧪 Ejecutar pruebas y controles de calidad
+##  Ejecutar pruebas y controles de calidad
 
 ```powershell
 # Ejecutar la suite de pruebas automatizadas (Pytest)
@@ -159,6 +159,6 @@ El ejecutable compilado queda en `dist\CalculadoraSuperInteligente\CalculadoraSu
 
 ---
 
-## 📄 Licencia
+##  Licencia
 
 Distribuido bajo la licencia especificada en [`LICENSE`](LICENSE).
