@@ -1,0 +1,40 @@
+?start: equation | sum
+
+structured: "[" list_item ("," list_item)* "]" -> list_literal
+?list_item: sum | structured
+
+?equation: sum EQUALS sum -> eq
+
+?sum: product
+    | sum "+" product -> add
+    | sum "-" product -> sub
+
+?product: unary
+        | product "*" unary -> mul
+        | product "/" unary -> div
+        | product IMPLICIT_MUL unary -> implicit_mul
+
+?unary: "+" unary -> pos
+      | "-" unary -> neg
+      | power
+
+?power: atom
+      | atom "^" unary -> pow
+
+?atom: NUMBER -> number
+     | SYMBOL -> symbol
+     | CONSTANT -> constant
+     | function_call
+     | "(" sum ")"
+
+function_call: FUNCTION "(" [arguments] ")"
+arguments: sum ("," sum)*
+
+NUMBER: /\d+(\.\d+)?([eE][+-]?\d+)?/
+SYMBOL: /[a-zA-Z]/
+CONSTANT: "pi" | "π" | "e"
+FUNCTION: "sin" | "sen" | "cos" | "tan" | "tg" | "ln" | "log10" | "sqrt" | "abs" | "exp" | "arcsin" | "arcsen" | "arccos" | "arctan"
+IMPLICIT_MUL: "\u2062" // Invisible times, insertado por el preprocesador
+EQUALS: "="
+
+%ignore " "

@@ -1,0 +1,34 @@
+# Entornos virtuales y cachés de Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Artefactos de compilación y empaquetado (.exe local / PyInstaller)
+build/
+dist/
+.build-test*/
+tmp*/
+
+# Bases de datos locales e historial de ejecución
+*.db
+*.sqlite3
+*.sqlite3-*
+
+# Archivos locales de coordinación de agentes y borradores internos
+.agent/
+.agents/
+.ai/
+AGENTS.md
+GEMINI.md
+FLUJO_DE_TRABAJO.md
+skills-lock.json
+plantilla-multiagente/
+replica/
+scratch_log.py
+ANALISIS_DEL_PROYECTO.md
+[0-2][0-9]-*.md
