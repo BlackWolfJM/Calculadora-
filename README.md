@@ -117,7 +117,7 @@ python -m venv .venv
 
 ---
 
-## 📦 Compilar y ejecutar como archivo `.exe` (Standalone Windows)
+##  Compilar y ejecutar como archivo `.exe` (Standalone Windows)
 
 El proyecto incluye soporte completo para compilarse en un ejecutable autónomo de Windows (`CalculadoraSuperInteligente.exe`) mediante **PyInstaller** usando el archivo [`CalculadoraSuperInteligente.spec`](CalculadoraSuperInteligente.spec):
 
