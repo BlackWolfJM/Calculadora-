@@ -169,6 +169,8 @@ class MainWindow(QMainWindow):
         nav.addWidget(self._structured_nav_button("matrices"))
         nav.addWidget(self._structured_nav_button("discrete"))
         nav.addWidget(_label("Geometría", "nav-group"))
+        self.btn_vector_lab = self._nav_button("Laboratorio vectorial", "vector_lab", "multivariable")
+        nav.addWidget(self.btn_vector_lab)
         nav.addWidget(self._structured_nav_button("geometry"))
         nav.addWidget(self._structured_nav_button("analytic_geometry"))
         self.btn_graficadora = self._nav_button("Graficadora", "graphing", "graph")
@@ -243,6 +245,7 @@ class MainWindow(QMainWindow):
             *(self.structured_nav[key] for key in
               ("matrices", "discrete", "geometry", "analytic_geometry")),
             self.btn_graficadora,
+            self.btn_vector_lab,
             self.btn_historial,
             self.btn_new,
             self.structured_op_combo,
@@ -758,6 +761,9 @@ class MainWindow(QMainWindow):
         if module_id == "graphing":
             self._open_graph_workspace()
             return
+        if module_id == "vector_lab":
+            self._open_vector_lab()
+            return
         titles = {
             "derivatives": "Derivadas",
             "integrals": "Integrales",
@@ -771,6 +777,7 @@ class MainWindow(QMainWindow):
         self.workspace_stack.setCurrentWidget(self.work_scroll)
         self.btn_new.show()
         self.btn_graficadora.setChecked(False)
+        self.btn_vector_lab.setChecked(False)
         for shortcut in self._solver_shortcuts:
             shortcut.setEnabled(True)
         if returning and module_id == self.current_module_id:
@@ -865,6 +872,22 @@ class MainWindow(QMainWindow):
         for key, button in self.structured_nav.items():
             button.setChecked(module_id == key)
 
+    def _open_vector_lab(self) -> None:
+        if self._state != ProcessState.IDLE:
+            return
+        if not hasattr(self, "_vector_lab_widget"):
+            from src.presentation.vector_lab_widget import VectorLabWidget
+
+            self._vector_lab_widget = VectorLabWidget(self)
+            self.workspace_stack.addWidget(self._vector_lab_widget)
+        self.workspace_stack.setCurrentWidget(self._vector_lab_widget)
+        self.btn_new.hide()
+        for shortcut in self._solver_shortcuts:
+            shortcut.setEnabled(False)
+        self._solver_navigation("")
+        self.btn_vector_lab.setChecked(True)
+        self.btn_graficadora.setChecked(False)
+
     def _open_graph_workspace(self) -> None:
         if self._graph_workspace is None:
             from src.presentation.graphing_workspace import GraphingWorkspace
@@ -877,6 +900,7 @@ class MainWindow(QMainWindow):
             shortcut.setEnabled(False)
         self._solver_navigation("")
         self.btn_graficadora.setChecked(True)
+        self.btn_vector_lab.setChecked(False)
 
     def _send_to_graph_workspace(self) -> None:
         self._open_graph_workspace()
