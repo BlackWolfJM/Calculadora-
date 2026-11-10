@@ -99,12 +99,19 @@ def calculate(
         arrows = [_arrow("Desplazamiento", origin, u)]
         steps.append(_step(1, "Identificación",
             "Una flecha representa componentes y sentido; un escalar se representa por un valor.",
-            r"s=2", r"\\vec{u}=" + uv))
+            r"s=2", r"\vec{u}=" + uv))
     elif subtopic == "01.02":
         result = u
         arrows = [_arrow("P", origin, u)]
-        note = ("El octante depende de los signos de x, y, z."
-                if u.rows == 3 else "El cuadrante depende de los signos de x e y.")
+        signs = tuple(int(sp.sign(x)) for x in u)
+        if 0 in signs:
+            note = "El punto pertenece a un eje o plano coordenado."
+        elif u.rows == 2:
+            quadrants = {(1, 1): "I", (-1, 1): "II",
+                         (-1, -1): "III", (1, -1): "IV"}
+            note = f"Cuadrante {quadrants[signs]}."
+        else:
+            note = "Signos del octante (x,y,z): " + str(signs)
         steps.append(_step(1, "Localización",
             "Ubicamos el punto usando sus coordenadas con signo.",
             r"P=(x,y,z)" if u.rows == 3 else r"P=(x,y)",
@@ -118,11 +125,15 @@ def calculate(
     elif subtopic == "01.04":
         result = u
         arrows = [_arrow("u", origin, u)]
+        for i in range(u.rows):
+            component = sp.zeros(u.rows, 1)
+            component[i] = u[i]
+            arrows.append(_arrow(("x", "y", "z")[i], origin, component))
         note = "Las componentes son coeficientes de la base cartesiana i, j, k."
         steps.append(_step(1, "Descomposición",
             "Cada componente multiplica su vector canónico correspondiente.",
             uv, "+".join(f"({sp.latex(u[i])}){axis}" for i, axis in enumerate(
-                (r"\\mathbf{i}", r"\\mathbf{j}", r"\\mathbf{k}")[:u.rows]))))
+                (r"\mathbf{i}", r"\mathbf{j}", r"\mathbf{k}")[:u.rows]))))
     elif subtopic == "01.05":
         result = v - u
         arrows = [_arrow("A", origin, u), _arrow("B", origin, v), _arrow("B-A", u, v)]
@@ -133,20 +144,21 @@ def calculate(
             vv + "-" + uv, sp.latex(result.T)))
         steps.append(_step(2, "Distancia",
             "La distancia euclidiana es la norma del desplazamiento.",
-            r"\\|B-A\\|", sp.latex(sp.simplify(d))))
+            r"\|B-A\|", sp.latex(sp.simplify(d))))
     elif subtopic == "01.06":
         result = "Iguales" if u == v else "Distintos"
         arrows = [_arrow("u", origin, u), _arrow("v trasladado", u, u + v)]
         steps.append(_step(1, "Igualdad",
             "Dos vectores son iguales si todas sus componentes son iguales, aunque cambie su origen.",
-            uv + "=" + vv + "?", sp.latex(sp.Eq(u, v, evaluate=False))))
+            uv + "=" + vv + "?", (r"\mathrm{iguales}" if u == v else r"\mathrm{distintos}")))
     elif subtopic == "01.07":
         if operation not in ("sum", "difference"):
             raise ValueError("Operación admitida: sum o difference.")
         sign = 1 if operation == "sum" else -1
         result = u + sign*v
         arrows = [_arrow("u", origin, u), _arrow("v" if sign == 1 else "-v", u, result),
-                  _arrow("resultante", origin, result)]
+                  _arrow("resultante", origin, result),
+                  _arrow("paralelogramo", v if sign == 1 else -v, result)]
         steps.append(_step(1, "Operación componente a componente",
             "Sumamos o restamos cada pareja de coordenadas sin mezclar ejes.",
             uv + ("+" if sign == 1 else "-") + vv, sp.latex(result.T)))
@@ -168,7 +180,9 @@ def calculate(
             "El producto por escalar se distribuye sobre la suma.",
             sp.latex(k) + "(" + uv + "+" + vv + ")",
             sp.latex((k*u+k*v).T)))
-        note = "También se verifica la asociatividad con un tercer vector."
+        w = sp.ones(u.rows, 1)
+        assert (u + v) + w == u + (v + w)
+        note = "Asociatividad comprobada además con w=(1,…,1)."
     else:
         result = k*u + v
         arrows = [_arrow("k·u", origin, k*u), _arrow("v", k*u, result),
@@ -184,13 +198,13 @@ def calculate(
             sp.latex(k) + uv + "+" + vv, sp.latex(result.T)))
         steps.append(_step(2, "Colinealidad",
             "Dos vectores son colineales exactamente cuando el rango de la matriz que forman es ≤ 1.",
-            r"\\operatorname{rang}([u\\ v])", sp.latex(rank)))
+            r"\operatorname{rang}([u\ v])", sp.latex(rank)))
 
     if isinstance(result, sp.MatrixBase):
         latex = sp.latex(result.T)
         value = sp.sstr(list(result))
     elif isinstance(result, str):
-        latex = r"\\text{" + result.replace(";", r"\\;") + "}"
+        latex = r"\text{" + result.replace(";", r"\;") + "}"
         value = result
     else:
         latex = sp.latex(result)
